@@ -36,14 +36,14 @@ class EquipmentController extends Controller
             'delivered_at' => 'required|date',
             'returned_at' => 'nullable|date|after_or_equal:delivered_at',
         ]);
-
+    
         Equipment::create([
             'name' => $request->name,
             'responsible' => $request->responsible,
             'delivered_at' => $request->delivered_at,
             'returned_at' => $request->returned_at,
         ]);
-
+    
         return redirect()->route('equipment.index')->with('success', 'Equipo creado exitosamente.');
     }
 
@@ -86,12 +86,11 @@ class EquipmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Equipment $equipment)
     {
-        $equipment = Equipment::findOrFail($id);
-    $equipment->delete();
-
-    return redirect()->route('equipment.index')->with('success', 'Equipo eliminado exitosamente.');
+        $equipment->delete();
+        return redirect()->route('equipment.index')->with('success', 'Equipo eliminado exitosamente.');
     }
+    
 }
 
