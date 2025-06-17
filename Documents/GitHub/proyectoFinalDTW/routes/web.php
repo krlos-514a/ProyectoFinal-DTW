@@ -27,3 +27,4 @@ Route::middleware(['auth'])->group(function() {
 Route::resource('equipment', EquipmentController::class);
 
 require __DIR__.'/auth.php';
+
