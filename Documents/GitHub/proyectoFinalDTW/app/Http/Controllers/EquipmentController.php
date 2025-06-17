@@ -36,14 +36,14 @@ class EquipmentController extends Controller
             'delivered_at' => 'required|date',
             'returned_at' => 'nullable|date|after_or_equal:delivered_at',
         ]);
-
+    
         Equipment::create([
             'name' => $request->name,
             'responsible' => $request->responsible,
             'delivered_at' => $request->delivered_at,
             'returned_at' => $request->returned_at,
         ]);
-
+    
         return redirect()->route('equipment.index')->with('success', 'Equipo creado exitosamente.');
     }
 

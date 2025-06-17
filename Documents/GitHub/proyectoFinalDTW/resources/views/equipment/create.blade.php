@@ -51,20 +51,15 @@
         <a href="{{ route('equipment.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 
-    <script>
-        // Validación simple para que el campo 'name' no esté vacío
-        document.getElementById('formEquipo').addEventListener('submit', function(e) {
-            let name = document.querySelector('[name="name"]');
-            if (!name.value.trim()) {
-                e.preventDefault();
-                name.classList.add('is-invalid');
-            }
-        });
-    </script>
+    <hr>
+
+    <button type="button" class="btn btn-outline-info mt-3" id="viewHistory">Ver historial</button>
+    <button type="button" class="btn btn-outline-danger mt-3" id="clearHistory">Limpiar historial</button>
+    <div id="historyContainer" class="mt-3"></div>
 </div>
 
 <script>
-    // Validación de Bootstrap para el formulario
+    // Validación Bootstrap
     (() => {
         'use strict'
         const form = document.querySelector('#formEquipo');
@@ -76,5 +71,48 @@
             form.classList.add('was-validated');
         }, false);
     })();
+
+    // Validación adicional y guardar historial en localStorage
+    document.getElementById('formEquipo').addEventListener('submit', function(e) {
+        let name = document.querySelector('[name="name"]');
+        if (!name.value.trim()) {
+            e.preventDefault();
+            name.classList.add('is-invalid');
+            return;
+        }
+
+        // Guardar en historial local
+        let list = JSON.parse(localStorage.getItem('history')) || [];
+        list.push({
+            name: name.value.trim(),
+            date: new Date().toISOString()
+        });
+        localStorage.setItem('history', JSON.stringify(list));
+    });
+
+    // Mostrar historial
+    document.getElementById('viewHistory')?.addEventListener('click', () => {
+        const history = JSON.parse(localStorage.getItem('history')) || [];
+        const container = document.getElementById('historyContainer');
+
+        if (history.length === 0) {
+            container.innerHTML = '<div class="alert alert-warning">No hay historial disponible.</div>';
+            return;
+        }
+
+        let html = '<ul class="list-group">';
+        history.forEach(entry => {
+            html += `<li class="list-group-item">${entry.name} – ${new Date(entry.date).toLocaleString()}</li>`;
+        });
+        html += '</ul>';
+        container.innerHTML = html;
+    });
+
+    // Limpiar historial
+    document.getElementById('clearHistory')?.addEventListener('click', () => {
+        localStorage.removeItem('history');
+        const container = document.getElementById('historyContainer');
+        container.innerHTML = '<div class="alert alert-info">Historial borrado.</div>';
+    });
 </script>
 @endsection
