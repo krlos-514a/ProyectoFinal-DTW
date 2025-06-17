@@ -5,7 +5,7 @@
     <h1>Lista de Equipos Tecnológicos</h1>
 
     @can('equipment.create')
-    <a href="{{ route('equipos.create') }}" class="btn btn-primary mb-3">Agregar Equipo</a>
+    <a href="{{ route('equipment.create') }}" class="btn btn-primary mb-3">Agregar Equipo</a>
     @endcan
 
     @if(session('success'))
@@ -71,7 +71,7 @@
 </div>
 
 <script>
-    // Función para mostrar alertas temporales
+    // Mostrar alertas temporales arriba
     function showMessage(msg, type = 'success') {
         const alert = document.createElement('div');
         alert.className = `alert alert-${type} mt-2`;
@@ -80,7 +80,7 @@
         setTimeout(() => alert.remove(), 3000);
     }
 
-    // Cargar historial desde localStorage y mostrarlo en la lista
+    // Cargar historial desde localStorage
     function loadHistory() {
         const history = JSON.parse(localStorage.getItem('history')) || [];
         const list = document.getElementById('historyList');
@@ -102,7 +102,7 @@
         });
     }
 
-    // Limpiar historial al hacer clic
+    // Limpiar historial al click
     document.getElementById('clearHistory').addEventListener('click', () => {
         localStorage.removeItem('history');
         loadHistory();
@@ -113,12 +113,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadHistory();
 
-        // Ejemplo: Guarda los equipos visibles en el historial
         const equipos = @json($equipos->pluck('name'));
         let history = JSON.parse(localStorage.getItem('history')) || [];
 
         equipos.forEach(name => {
-            // Evitar duplicados guardando solo si no existe el mismo nombre reciente
             if (!history.some(item => item.name === name)) {
                 history.push({ name: name, date: new Date().toISOString() });
             }
@@ -128,13 +126,13 @@
         loadHistory();
     });
 
-    // Mostrar clima con fetch y OpenWeatherMap API
+    // Mostrar clima
     document.getElementById('getWeather').addEventListener('click', async () => {
         const contenedor = document.getElementById('climaContainer');
         contenedor.innerHTML = 'Cargando clima...';
 
         try {
-            const apiKey = "101f370df00fec1a8c81a880bd85c7ab"; // Cambia a tu API Key real si quieres
+            const apiKey = "101f370df00fec1a8c81a880bd85c7ab"; // Pon tu API Key aquí
             const ciudad = "San Salvador";
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&units=metric&lang=es&appid=${apiKey}`;
 
@@ -159,4 +157,3 @@
     });
 </script>
 @endsection
-

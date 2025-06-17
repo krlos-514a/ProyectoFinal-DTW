@@ -86,12 +86,11 @@ class EquipmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Equipment $equipment)
     {
-        $equipment = Equipment::findOrFail($id);
-    $equipment->delete();
-
-    return redirect()->route('equipment.index')->with('success', 'Equipo eliminado exitosamente.');
+        $equipment->delete();
+        return redirect()->route('equipment.index')->with('success', 'Equipo eliminado exitosamente.');
     }
+    
 }
 
