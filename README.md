@@ -1,4 +1,5 @@
 Tecnologías utilizadas:
+    
     PHP (Versión 8.1 o superior)
         Propósito: Procesamiento de la lógica de negocio, manejo de datos y generación de respuestas dinámicas.
         
